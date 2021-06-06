@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LightsOutCommandLine": {
+      "commandName": "Project",
+      "commandLineArgs": "start"
+    }
+  }
+}
