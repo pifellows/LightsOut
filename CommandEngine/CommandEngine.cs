@@ -9,7 +9,7 @@ namespace CommandEngine
 
         public CommandEngine()
         {
-            _GameSeeder = new LightsOut_Game.Seeder.BlankSeeder();//RandomSeeder(5);
+            _GameSeeder = new LightsOut_Game.Seeder.RandomSeeder(5);
             _Game = new LightsOut_Game.LightsOutCore();
             _Game.InitaliseGame(_GameSeeder);
         }
@@ -47,12 +47,16 @@ namespace CommandEngine
                 {
                     return new CommandEngineParseMoveFailedResponse(command);
                 }
-                var gameOver = _Game.MakeMove(x, y);
-                if (gameOver)
+                var successfulMove = _Game.MakeMove(x, y);
+                if (successfulMove)
                 {
-                    return new CommandEngineGameOverResponse(_Game.GetMoveCounter());
+                    if (_Game.IsGameComplete())
+                    {
+                        return new CommandEngineGameOverResponse(_Game.GetMoveCounter());
+                    }
+                    return new CommandEngineMoveMadeResponse(_Game.GetGrid());
                 }
-                return new CommandEngineMoveMadeResponse(_Game.GetGrid());
+                return new CommandEngineBadMoveMadeResponse();
             }
 
             return new CommandEngineUnknownResponse(command);

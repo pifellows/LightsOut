@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommandEngine\LightsOutCommandEngine.csproj" />
-    <ProjectReference Include="..\LightsOut-Game\LightsOutCore.csproj" />
+    <ProjectReference Include="..\LightsOutCore\LightsOutCore.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,16 +9,14 @@ namespace LightsOut_Game
         private bool _GameOver { get; set; }
         private int _MoveCounter { get; set; }
 
-        private readonly int SizeX = 5;
-        private readonly int SizeY = 5;
-        private readonly int MaxX = 4;
-        private readonly int MaxY = 4;
+        private readonly int MaxX = 5;
+        private readonly int MaxY = 5;
 
         public bool InitaliseGame(ISeeder gridSeeder)
         {
             _GameOver = false;
             _MoveCounter = 0;
-            _Grid = new bool[SizeY, SizeX];
+            _Grid = new bool[MaxY, MaxX];
             gridSeeder.Seed(_Grid);
             return true;
         }
@@ -30,7 +28,7 @@ namespace LightsOut_Game
                 // if we are uninitalised, return null
                 return null;
             }
-            var returnState = new bool[SizeY, SizeX];
+            var returnState = new bool[MaxY, MaxX];
             Array.Copy(_Grid, returnState, _Grid.Length);
             return returnState;
         }
@@ -39,18 +37,12 @@ namespace LightsOut_Game
         {
             if (_GameOver)
             {
-                return true;
-            }
-
-            if(x < 0 || MaxX < x || y < 0 || MaxY < y)
-            {
-                return false;
+                return _GameOver;
             }
 
             ToggleCells(x, y);
             _MoveCounter++;
-            CheckGameComplete();
-            return true;
+            return CheckGameComplete();
         }
 
         public bool IsGameComplete()
@@ -58,20 +50,21 @@ namespace LightsOut_Game
             return _GameOver;
         }
 
-        private void CheckGameComplete()
+        private bool CheckGameComplete()
         {
-            for (int i = 0; i < SizeY; i++)
+            for (int i = 0; i < MaxY; i++)
             {
-                for (int j = 0; j < SizeX; j++)
+                for (int j = 0; j < MaxX; j++)
                 {
                     if (_Grid[i, j] == true)
                     {
                         _GameOver = false;
-                        return;
+                        return _GameOver;
                     }
                 }
             }
             _GameOver = true;
+            return _GameOver;
         }
 
         private void ToggleCells(int x, int y)
@@ -80,7 +73,7 @@ namespace LightsOut_Game
             for (var i = x - 1; i < x + 2; i++)
             {
                 // toggle the horizontal line
-                if (i < 0 || SizeX <= i)
+                if (i < 0 || MaxX <= i)
                 {
                     continue;
                 }
@@ -90,7 +83,7 @@ namespace LightsOut_Game
             for (var j = y - 1; j < y + 2; j++)
             {
                 // toggle the vertical line
-                if (j < 0 || SizeY <= j)
+                if (j < 0 || MaxY <= j)
                 {
                     continue;
                 }

@@ -1,8 +1,8 @@
 using NUnit.Framework;
-using LightsOut_Game;
+using LightsOutCore;
 using System;
 
-namespace LightsoutGame.UnitTests
+namespace LightsoutCore.Tests
 {
     [TestFixture]
     public class InitaliseGame_Tests
@@ -183,24 +183,22 @@ namespace LightsoutGame.UnitTests
             Assert.AreEqual(want, result, $"result should be identical, want={want}, got={result}");
         }
 
-        [TestCase (3, 5)]
-        [TestCase (5, 3)]
-        [TestCase (5, 5)]
-        public void MakeMove_FirstMove_OutOfBounds(int x, int y)
+        [Test]
+        public void MakeMove_FirstMove_ReturnsFalse()
         {
             // Arrange
             var game = new LightsOutCore();
             var success = game.InitaliseGame(new LightsOut_Game.Seeder.BlankSeeder());
 
             //Act
-            var result = game.MakeMove(x, y);
+            var result = game.MakeMove(2, 2);
 
             // Assert
-            Assert.IsFalse(result, $"game should have reported bad move");
+            Assert.IsFalse(result, $"game should have reported as not finished");
         }
 
         [Test]
-        public void MakeMove_FinalMove_GoodMove()
+        public void MakeMove_FinalMove_ReturnsTrue()
         {
             // Arrange
             var game = new LightsOutCore();
@@ -211,7 +209,7 @@ namespace LightsoutGame.UnitTests
             var result = game.MakeMove(2, 2);
 
             // Assert
-            Assert.IsTrue(result, $"game should have reported successful move");
+            Assert.IsTrue(result, $"game should have reported as finished");
         }
 
         [Test]
@@ -227,7 +225,7 @@ namespace LightsoutGame.UnitTests
             var result = game.MakeMove(2, 2);
 
             // Assert
-            Assert.IsTrue(result, $"game should have reported good move");
+            Assert.IsTrue(result, $"game should have reported as finished");
         }
 
     }
